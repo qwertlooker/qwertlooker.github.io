@@ -7,8 +7,6 @@ authors:
 tags:
   - mock
   - c&c++
-image:
-  [image](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYP2ElE_ndTJtFBls85ygxyoQQOS2IoSR4AA&s)
 ---
 
 # mock原理
