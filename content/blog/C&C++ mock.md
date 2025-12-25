@@ -46,19 +46,16 @@ int main(int argc, char **argv) {
     /*电请写权限*/
     DWORD reSerued;
     // 计算页面边界
-    SYSTEM_INFO si;
-    GetSystemInfo(&si);
-    SIZE_T pageSize = si.dwPageSize;
-
     void *target = (void *) &FuncA;
-    uintptr_t pageStart = (uintptr_t) target & ~(pageSize - 1);
-    SIZE_T protectSize = pageSize; // 简单起见保护整个页面
+    SIZE_T protectSize = 4096; // 简单起见保护整个页面
+    uintptr_t pageStart = (uintptr_t) target & ~(protectSize - 1);
     if (!VirtualProtect((LPVOID) pageStart, protectSize, PAGE_EXECUTE_READWRITE, &reSerued)) {
-
         printf("VirtualProtect fail\n");
         return -1;
     }
+    // 修改指令
     memcpy(oldFuncAddr, jmpInst, sizeof(jmpInst));
+    // 恢复原有权限
     VirtualProtect((LPVOID) pageStart, protectSize, reSerued, &reSerued);
 
     printf("call FuncA=%d\n", FuncA());
